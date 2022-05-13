@@ -13,9 +13,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
 
-    private EditText edtusername,edtPassword;
+    private EditText edtUsername,edtPassword;
     private TextView txtWelcomeMessage;
     private Button btnSignIn;
 
@@ -24,10 +24,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LinearLayout mainContenerLayout = new LinearLayout(this);
-        mainContenerLayout.setOrientation(LinearLayout.VERTICAL);
-        mainContenerLayout.setPadding(20,20,20,40);
-        mainContenerLayout.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_HORIZONTAL);
+        LinearLayout mainContainerLayout = new LinearLayout(this);
+        mainContainerLayout.setOrientation(LinearLayout.VERTICAL);
+        mainContainerLayout.setPadding(20,20,20,40);
+        mainContainerLayout.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_HORIZONTAL);
 
         ViewGroup.LayoutParams layoutParams =
                 new ViewGroup.LayoutParams(
@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
                         ViewGroup.LayoutParams.MATCH_PARENT
                 );
 
-        mainContenerLayout.setLayoutParams(layoutParams);
+        mainContainerLayout.setLayoutParams(layoutParams);
 
 
         txtWelcomeMessage = new TextView( this);
@@ -43,48 +43,93 @@ public class MainActivity extends Activity {
         txtWelcomeMessage.setTextSize(30);
         txtWelcomeMessage.setTextColor(Color.BLACK);
 
-        ViewGroup.LayoutParams paramForView =
+        ViewGroup.LayoutParams paramsForView =
                 new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                 );
 
-        txtWelcomeMessage.setLayoutParams(paramForView);
+        txtWelcomeMessage.setLayoutParams(paramsForView);
 
-        mainContenerLayout.addView(txtWelcomeMessage);
+        mainContainerLayout.addView(txtWelcomeMessage);
         //setContentView(txtWelcomeMessage);
 
-        edtusername = new EditText(this);
-        edtusername.setHint("Enter UserName");
-        edtusername.setLayoutParams(paramForView);
+        edtUsername = new EditText(this);
+        edtUsername.setHint("Enter UserName");
+
+        edtUsername.setLayoutParams(paramsForView);
         //setContentView(edtusername);
-        mainContenerLayout.addView(edtusername);
+        mainContainerLayout.addView(edtUsername);
 
         edtPassword = new EditText(this);
-        edtPassword.setLayoutParams(paramForView);
-        mainContenerLayout.addView(edtPassword);
+        edtPassword.setLayoutParams(paramsForView);
+        mainContainerLayout.addView(edtPassword);
 
-        Button btnSignIn = new Button(this);
+        btnSignIn = new Button(this);
         btnSignIn.setText("Sign In");
-        btnSignIn.setLayoutParams(paramForView);
-        mainContenerLayout.addView(btnSignIn);
+        btnSignIn.setLayoutParams(paramsForView);
+        mainContainerLayout.addView(btnSignIn);
 
-        setContentView(mainContenerLayout);
+        setContentView(mainContainerLayout);
 
-        btnSignIn.setOnClickListener(new BtnSignInClickListener());
+       //btnSignIn.setOnClickListener(new BtnSignInClickListener());
+        //txtWelcomeMessage.setOnClickListener(new txtWelcomeMessageClickListener());
 
 
-        //setContentView(R.layout.activity_main);
+
+       /*View.OnClickListener listener = new MyViewClickListener();
+        btnSignIn.setOnClickListener(listener);
+        txtWelcomeMessage.setOnClickListener(listener);*/
+
+        btnSignIn.setOnClickListener(this);
+        txtWelcomeMessage.setOnClickListener(this);
+
+    }
+    @Override
+    public void onClick(View view){
+        if(view == txtWelcomeMessage){
+            txtWelcomeMessage.setText("");
+        }
+        if(view == btnSignIn){
+            if(edtUsername.getText().toString().equals("bitcode") && edtPassword.getText().toString().equals("bitcode@1234")){
+                txtWelcomeMessage.setText("Welcome "+edtUsername.getText().toString());
+            }
+            else{
+                txtWelcomeMessage.setText("Login Failed..");
+            }
+        }
+    }
+
+    class MyViewClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(view == txtWelcomeMessage){
+                txtWelcomeMessage.setText("");
+            }
+            if(view == btnSignIn){
+                if(edtUsername.getText().toString().equals("bitcode") && edtPassword.getText().toString().equals("bitcode@1234")){
+                    txtWelcomeMessage.setText("Welcome "+edtUsername.getText().toString());
+                }
+                else{
+                    txtWelcomeMessage.setText("Login Failed..");
+                }
+            }
+        }
+    }
+    class txtWelcomeMessageClickListener implements View.OnClickListener{
+        public void onClick(View v){
+            txtWelcomeMessage.setText("");
+
+        }
     }
 
     class BtnSignInClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            if(edtusername.getText().toString().equals("bitcode") && edtPassword.getText().toString().equals("bitcode@123")){
-                txtWelcomeMessage.setText("Welcome "+edtusername.getText().toString());
-            }
+            if(edtUsername.getText().toString().equals("bitcode") && edtPassword.getText().toString().equals("bitcode@1234"))
+                txtWelcomeMessage.setText("Welcome " + edtUsername.getText().toString());
             else{
-                txtWelcomeMessage.setText("Login Failed...");
+                txtWelcomeMessage.setText("Login Failed..");
             }
         }
     }
